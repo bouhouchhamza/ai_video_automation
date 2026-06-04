@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local AI Video Studio</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">AI</div>
+                <div>
+                    <p class="eyebrow">Local Studio</p>
+                    <h1>Faceless Video Generator</h1>
+                </div>
+            </div>
+            <div class="status-pill">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span>Ollama / Piper / Whisper / FFmpeg</span>
+            </div>
+        </header>
+
+        <main>
+            <section class="workspace" aria-label="Video generator">
+                <div class="panel generator-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Create</p>
+                            <h2>Generate a new video</h2>
+                        </div>
+                        <span class="chip">Local only</span>
+                    </div>
+
+                    <form id="generateForm" class="generator-form">
+                        <label for="topicInput">Topic</label>
+                        <textarea
+                            id="topicInput"
+                            name="topic"
+                            rows="4"
+                            maxlength="180"
+                            placeholder="e.g. Strange facts about deep sea creatures"
+                            autocomplete="off"
+                            required
+                        ></textarea>
+
+                        <button id="generateBtn" class="primary-button" type="submit">
+                            <span class="button-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span id="generateBtnText">Generate Video</span>
+                        </button>
+                    </form>
+
+                    <div id="progressPanel" class="progress-panel" hidden>
+                        <div class="progress-header">
+                            <span id="progressLabel">Preparing pipeline</span>
+                            <strong id="progressPercent">0%</strong>
+                        </div>
+                        <div class="progress-track" aria-hidden="true">
+                            <div id="progressBar" class="progress-bar"></div>
+                        </div>
+                        <ol id="stageList" class="stage-list">
+                            <li data-stage="0"><span>1</span>Generating script</li>
+                            <li data-stage="1"><span>2</span>Generating voice</li>
+                            <li data-stage="2"><span>3</span>Generating subtitles</li>
+                            <li data-stage="3"><span>4</span>Rendering video</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="panel preview-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">Preview</p>
+                            <h2 id="previewTitle">Latest render</h2>
+                        </div>
+                        <span id="previewMeta" class="chip">No video yet</span>
+                    </div>
+
+                    <div class="phone-stage">
+                        <video id="videoPlayer" class="video-player" controls playsinline preload="metadata"></video>
+                        <div id="emptyPreview" class="empty-preview">
+                            <div class="empty-preview-mark" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M8 5v14l11-7-11-7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <p>Your next generated video appears here.</p>
+                        </div>
+                    </div>
+
+                    <div class="preview-actions">
+                        <a id="downloadBtn" class="secondary-button is-disabled" href="#" aria-disabled="true">
+                            <span class="button-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            <span>Download</span>
+                        </a>
+                        <button id="refreshBtn" class="icon-button" type="button" title="Refresh history" aria-label="Refresh history">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="history-section" aria-label="Generated videos">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">History</p>
+                        <h2>Generated videos</h2>
+                    </div>
+                    <span id="historyCount" class="chip">0 videos</span>
+                </div>
+
+                <div id="historyGrid" class="history-grid"></div>
+
+                <div id="emptyHistory" class="empty-history">
+                    <p>No generated videos found in the output folder.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="toastViewport" class="toast-viewport" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

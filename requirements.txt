@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+requests
+python-dotenv
+faster-whisper
+edge-tts
+torch
+torchaudio
+coqui-tts
